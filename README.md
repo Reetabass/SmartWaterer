@@ -4,9 +4,13 @@ A DIY soil moisture monitoring and automatic plant watering system, designed to 
 
 ## Work in Progress
 
+To view the current code, you will find the main.c file within the src folder.
+
 ### Completed:
-- QT Py S3 board connected  
-- Firmware successfully flashed
+-Prototype built
+![IMG_2681](https://github.com/user-attachments/assets/ce1b78ab-2ccb-4a0a-b1f6-ac54e35ab7d0)
+-5v relay to control the pump
+-Moisture sensor using ADC
 
 ### Currently working on:
 - Writing firmware to implement core system features
@@ -24,7 +28,7 @@ A DIY soil moisture monitoring and automatic plant watering system, designed to 
 - Capacitive soil moisture sensor  
 - 5V relay module  
 - Submersible water pump  
-- Battery pack  
+- Battery pack (for pump)
 - USB-C cable (for development power)
 
 ## TODO
