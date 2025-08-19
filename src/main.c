@@ -7,8 +7,6 @@
 
 void app_main(void) {
     setvbuf(stdout, NULL, _IONBF, 0);
-    
-    // Add a longer delay to ensure serial is ready and boot messages finish
     vTaskDelay(pdMS_TO_TICKS(1000));
     printf("\n=== APPLICATION STARTING ===\n");
     printf("Booted successfully!\n");
