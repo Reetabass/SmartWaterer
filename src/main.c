@@ -1,30 +1,52 @@
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
+#include "driver/adc.h"
+#include "esp_adc/adc_oneshot.h"
+#include "esp_rom_sys.h"
+#include "esp_log.h"
 
-#define LED_PIN GPIO_NUM_18
+#define TAG "smartwater"
+
+#define PIN_MOISTURE_ADC GPIO_NUM_9
+#define ADC_CHANNEL ADC1_CHANNEL_1
+#define PIN_EXTERNAL_INTER GPIO_NUM_8
+
+//ADC
+static adc_oneshot_unit_handle_t adc1_handle;
+
 
 void app_main(void) {
-    setvbuf(stdout, NULL, _IONBF, 0);
-    vTaskDelay(pdMS_TO_TICKS(1000));
-    printf("\n=== APPLICATION STARTING ===\n");
-    printf("Booted successfully!\n");
-    fflush(stdout);
-    
-    gpio_reset_pin(LED_PIN);
-    gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT);
-    printf("GPIO PIN %d initialized as output!\n", LED_PIN);
-    printf("Starting LED blink loop...\n");
-    fflush(stdout);
 
+    bootInit();
+    
     
     while (1) {
-        printf("LED OFF\n");
-        gpio_set_level(LED_PIN, 0);
-        vTaskDelay(pdMS_TO_TICKS(500));
-        printf("LED ON\n");
-        gpio_set_level(LED_PIN, 1);
-        vTaskDelay(pdMS_TO_TICKS(500));
+
     }
+}
+
+void interruptInit() {
+
+}
+
+void adcInit() {
+
+}
+
+void bootInit() {
+    ESP_LOGI(TAG, "boot");
+
+}
+
+void run_ADC() {
+    adc_oneshot_unit_handle_t init_config1 = {
+        .unit_id = ADC_UNIT_1,
+        .ulp_mode = ADC_ULP_MODE_DISABLE,
+    };
+    ESP_ERROR_CHECK(adc_oneshot_new_unit(&init_config1, &adc1_handle));
+
+
 }
