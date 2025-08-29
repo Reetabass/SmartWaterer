@@ -15,7 +15,7 @@
 #define TAG "smartwater"
 
 #define PIN_MOISTURE_ADC GPIO_NUM_9 // PIN A2 on pinout
-#define ADC_CHANNEL ADC1_CHANNEL_8
+#define ADC_CHANNEL ADC_CHANNEL_8
 #define ADC_UNIT ADC_UNIT_1
 #define ADC_ATTEN ADC_ATTEN_DB_12
 
@@ -35,8 +35,12 @@
 */
 
 //function defintions
-
+void bootInit();
 static void adc_task(void *args);
+void adc_oneShot_Init(void);
+void adc_chan_init(void);
+static bool adc_calibration_init(adc_unit_t unit, adc_atten_t atten);
+void run_ADC_calibrated(void);
 
 
 //ADC
@@ -56,7 +60,7 @@ void app_main(void) {
 
     adc_oneShot_Init();
 
-    BaseType_t ok = XTackCreate(
+    BaseType_t ok = xTaskCreate(
         adc_task,
         "adc_task",
         3072,
@@ -109,12 +113,12 @@ void adc_oneShot_Init() {
 
 void adc_chan_init() {
 
-    adc_oneshot_chan_cfg_t init_config1 = {
+    adc_oneshot_chan_cfg_t cfg = {
         .atten = ADC_ATTEN,
         .bitwidth = ADC_BITWIDTH_12,
 
     };
-    ESP_ERROR_CHECK(adc_oneshot_config_channel(&adc1_handle, ADC_CHANNEL, &init_config1));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, ADC_CHANNEL, &cfg));
 
 }
 
@@ -190,7 +194,7 @@ static bool adc_calibration_init(adc_unit_t unit, adc_atten_t atten) {
             ESP_LOGI(TAG, "ADC calibration : curve fitting");
             return true;
         }
-        ESP_LOGW(TAG, "curve fitting created failed", esp_err_to_name(ret));
+        ESP_LOGW(TAG, "curve fitting created failed: %s", esp_err_to_name(ret));
     }
 
     /*Line fitting is not supported on esp32s3 so commenting out to remove error*/
